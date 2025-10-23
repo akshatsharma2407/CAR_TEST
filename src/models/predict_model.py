@@ -3,9 +3,11 @@ import joblib
 import numpy as np
 import logging
 import os
+import yaml
 import pandas as pd
 from sklearn.base import BaseEstimator
 from sklearn.metrics import mean_absolute_error
+from dvclive import Live
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -59,7 +61,7 @@ def evaluate(
     ytest: pd.DataFrame,
     model: BaseEstimator,
     evaluation_result_path: str,
-) -> None:
+) -> float:
     try:
         ypred = model.predict(xtest.values)
 
@@ -71,21 +73,35 @@ def evaluate(
             json.dump(metrics_dict, f)
         
         logger.debug('evaluation done')
+
+        return mae
     except Exception as e:
         logger.error(f'found unexpected error at {__file__} -> evaluate')
         raise
 
+def exp_tracking_dvc(params_path: str, mae: float) -> None:
+    
+    with Live(save_dvc_exp=True) as live:
+        live.log_metric('MAE', mae)
+
+    with open(params_path, 'r') as f:
+        params = yaml.safe_load(f)
+    
+    for param, value in params.items():
+        for key, val in value.items():
+            live.log_param(f'{param}_{key}',val)
 
 def main() -> None:
     try:
         model = load_model(model_path="models/model.pkl")
         xtest, ytest = load_data(data_path="data/processed/test_processed.csv")
-        evaluate(
+        mae = evaluate(
             xtest=xtest,
             ytest=ytest,
             model=model,
-            evaluation_result_path="reports/metrics.json",
+            evaluation_result_path="reports/metrics.json"
         )
+        exp_tracking_dvc(params_path='params.yaml',mae=mae)
         logger.debug('main function executed')
     except Exception as e:
         logger.error(f'Found Unexpected error at {__file__} -> main')
