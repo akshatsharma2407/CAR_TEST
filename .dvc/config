@@ -1,4 +1,6 @@
 [core]
-    remote = myremote
+    remote = dvcremote
 ['remote "myremote"']
     url = C:\Users\aksha\AppData\Local\Temp\autonexus
+['remote "dvcremote"']
+    url = s3://autonexusdemo
