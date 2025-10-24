@@ -14,7 +14,7 @@ from sklearn.base import BaseEstimator
 import matplotlib.pyplot as plt
 import dagshub
 
-mlflow.set_tracking_uri('https://dagshub.com/akshatsharma2407/CAR_TEST.mlflow')
+mlflow.set_tracking_uri('http://ec2-13-201-18-142.ap-south-1.compute.amazonaws.com:5000/')
 
 dagshub.init(repo_owner='akshatsharma2407', repo_name='CAR_TEST', mlflow=True)
 

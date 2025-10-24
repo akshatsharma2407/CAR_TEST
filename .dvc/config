@@ -1,4 +1,1 @@
-[core]
-    remote = dvcremote
-['remote "dvcremote"']
-    url = s3://autonexusdvc
+
