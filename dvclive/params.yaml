@@ -1,2 +1,2 @@
-data_ingestion_test_size: 0.23
-train_model_n_estimators: 30
+data_ingestion_test_size: 0.3
+train_model_n_estimators: 5
