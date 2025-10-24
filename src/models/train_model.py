@@ -9,7 +9,7 @@ from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.model_selection import GridSearchCV
 import mlflow
 
-mlflow.set_tracking_uri('http://ec2-13-201-18-142.ap-south-1.compute.amazonaws.com:5000/')
+mlflow.set_tracking_uri('http://ec2-13-203-154-81.ap-south-1.compute.amazonaws.com:5000/')
 
 logger = logging.getLogger(os.path.basename(__file__))
 logger.setLevel('DEBUG')
@@ -59,9 +59,18 @@ def load_data(data_path: str) -> tuple[np.array, np.array]:
 def train_model(n_estimator: int, xtrain: np.array, ytrain: np.array) -> BaseEstimator:
     try:
         model = GradientBoostingRegressor(n_estimators=n_estimator)
-        model.fit(xtrain, ytrain)
+
+        param_grid = {
+            "n_estimators": [100, 50],
+            "max_depth": [3, 4]
+        }
+
+        grid_search = GridSearchCV(estimator=model, param_grid=param_grid, cv=5, n_jobs=1, verbose=2)
+
+        grid_search.fit(xtrain,ytrain)
+            
         logger.debug('model trained')
-        return model
+        return grid_search.best_estimator_
     except Exception as e:
         logger.error(f'Found unexpected error in {__file__} -> train_model')
         raise
@@ -79,7 +88,7 @@ def save_model(model_path: str, model: BaseEstimator) -> None:
 def main() -> None:
     try:
         mlflow.sklearn.autolog()
-        mlflow.set_experiment('new exp')
+        mlflow.set_experiment('hyperparams tuning')
         with mlflow.start_run():
             n_estimator = load_params(param_path="params.yaml")
             xtrain, ytrain = load_data(data_path="data/processed/train_processed.csv")
