@@ -12,8 +12,11 @@ import mlflow
 import seaborn as sns
 from sklearn.base import BaseEstimator
 import matplotlib.pyplot as plt
+import dagshub
 
-mlflow.set_tracking_uri('http://127.0.0.1:5000')
+mlflow.set_tracking_uri('https://dagshub.com/akshatsharma2407/CAR_TEST.mlflow')
+
+dagshub.init(repo_owner='akshatsharma2407', repo_name='CAR_TEST', mlflow=True)
 
 logger = logging.getLogger(os.path.basename(__file__))
 logger.setLevel('DEBUG')
