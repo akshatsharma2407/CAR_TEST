@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/aksha/OneDrive/Desktop/cars_mlops_practice/autonexus/mlruns/675170095931464183/03ec1567c29d41bab9aedeaed5870259/artifacts
+end_time: 1761286798788
+entry_point_name: ''
+experiment_id: '675170095931464183'
+lifecycle_stage: active
+run_id: 03ec1567c29d41bab9aedeaed5870259
+run_name: monumental-sheep-313
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1761286798686
+status: 3
+tags: []
+user_id: aksha

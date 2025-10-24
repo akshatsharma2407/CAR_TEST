@@ -9,6 +9,10 @@ from sklearn.base import BaseEstimator
 from sklearn.metrics import mean_absolute_error
 from dvclive import Live
 import mlflow
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+mlflow.set_tracking_uri('http://127.0.0.1:5000')
 
 logger = logging.getLogger(os.path.basename(__file__))
 logger.setLevel('DEBUG')
@@ -90,9 +94,10 @@ def exp_tracking_dvc(params_path: str, mae: float) -> None:
         for param, value in params.items():
             for key, val in value.items():
                 live.log_param(f'{param}_{key}',val)
+    
 
-def exp_tracking_mlflow(params_path: str, mae: float) -> None:
-
+def exp_tracking_mlflow(params_path: str, mae: float, xtest: pd.DataFrame) -> None:
+    mlflow.set_experiment('new exp')
     with mlflow.start_run():
         mlflow.log_metric('MAE',mae)
 
@@ -102,6 +107,12 @@ def exp_tracking_mlflow(params_path: str, mae: float) -> None:
         for param, value in params.items():
             for key, val in value.items():
                 mlflow.log_param(f'{param}_{key}',val)
+        
+        corr_matrix = xtest.corr()
+        sns.heatmap(corr_matrix)
+        
+        plt.save_fig('corr_matrix.png')
+        mlflow.log_artifact('corr_matrix.png')
 
 
 def main() -> None:
@@ -115,7 +126,7 @@ def main() -> None:
             evaluation_result_path="reports/metrics.json"
         )
         exp_tracking_dvc(params_path='params.yaml',mae=mae)
-        exp_tracking_mlflow(params_path='params.yaml',mae=mae)
+        exp_tracking_mlflow(params_path='params.yaml',mae=mae, xtest= xtest)
         logger.debug('main function executed')
     except Exception as e:
         logger.error(f'Found Unexpected error at {__file__} -> main')

@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/0/c1a0a791d2f54f89b8b03b2785c92256/artifacts
+end_time: 1761285879992
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: c1a0a791d2f54f89b8b03b2785c92256
+run_name: spiffy-skunk-807
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1761285879908
+status: 3
+tags: []
+user_id: aksha

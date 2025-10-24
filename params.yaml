@@ -2,4 +2,4 @@ data_ingestion:
   test_size: 0.2
 
 train_model:
-  n_estimators: 5
+  n_estimators: 10
