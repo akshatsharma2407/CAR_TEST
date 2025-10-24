@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/aksha/OneDrive/Desktop/cars_mlops_practice/autonexus/mlruns/675170095931464183/da355b2ed95349f7912d2e6c5837b33a/artifacts
+end_time: 1761288019816
+entry_point_name: ''
+experiment_id: '675170095931464183'
+lifecycle_stage: active
+run_id: da355b2ed95349f7912d2e6c5837b33a
+run_name: selective-roo-181
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1761288015545
+status: 4
+tags: []
+user_id: aksha

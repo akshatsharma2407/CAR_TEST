@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/aksha/OneDrive/Desktop/cars_mlops_practice/autonexus/mlruns/675170095931464183/fae72611c75a47558dff47d28279fc22/artifacts
+end_time: 1761288041115
+entry_point_name: ''
+experiment_id: '675170095931464183'
+lifecycle_stage: active
+run_id: fae72611c75a47558dff47d28279fc22
+run_name: blushing-donkey-797
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1761288040100
+status: 3
+tags: []
+user_id: aksha

@@ -111,8 +111,10 @@ def exp_tracking_mlflow(params_path: str, mae: float, xtest: pd.DataFrame) -> No
         corr_matrix = xtest.corr()
         sns.heatmap(corr_matrix)
         
-        plt.save_fig('corr_matrix.png')
+        plt.savefig('corr_matrix.png')
         mlflow.log_artifact('corr_matrix.png')
+
+        mlflow.log_artifact(__file__)
 
 
 def main() -> None:
