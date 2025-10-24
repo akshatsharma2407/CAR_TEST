@@ -9,11 +9,11 @@ stages:
       size: 2621
     params:
       params.yaml:
-        data_ingestion.test_size: 0.3
+        data_ingestion.test_size: 0.2
     outs:
     - path: data/raw
       hash: md5
-      md5: 03510fec52efdb47bc9bbe254996c9e3.dir
+      md5: c9933f600c664882d1a46a37e66e8f00.dir
       size: 909758
       nfiles: 2
   data_preprocessing:
@@ -21,7 +21,7 @@ stages:
     deps:
     - path: data/raw
       hash: md5
-      md5: 03510fec52efdb47bc9bbe254996c9e3.dir
+      md5: c9933f600c664882d1a46a37e66e8f00.dir
       size: 909758
       nfiles: 2
     - path: src/features/transformations.py
@@ -31,20 +31,20 @@ stages:
     outs:
     - path: data/processed
       hash: md5
-      md5: 38b305ece556087baeda22c797179a79.dir
-      size: 3856875
+      md5: bf955ae35a89a769488a49c61e00d799.dir
+      size: 3847915
       nfiles: 2
     - path: models/scaler.joblib
       hash: md5
-      md5: 4d0f9975e480ac7a3f1c72698e7e214f
+      md5: 5e2806714762039e926393b22e151576
       size: 1631
   train_model:
     cmd: python src/models/train_model.py
     deps:
     - path: data/processed
       hash: md5
-      md5: 38b305ece556087baeda22c797179a79.dir
-      size: 3856875
+      md5: bf955ae35a89a769488a49c61e00d799.dir
+      size: 3847915
       nfiles: 2
     - path: src/models/train_model.py
       hash: md5
@@ -56,19 +56,19 @@ stages:
     outs:
     - path: models/model.pkl
       hash: md5
-      md5: 62cbe782ea6cfcc098c01a2b7e8e7fab
+      md5: 115ad682fe25ec1f85174a0832917043
       size: 19928
   evaluation:
     cmd: python src/models/predict_model.py
     deps:
     - path: data/processed
       hash: md5
-      md5: 38b305ece556087baeda22c797179a79.dir
-      size: 3856875
+      md5: bf955ae35a89a769488a49c61e00d799.dir
+      size: 3847915
       nfiles: 2
     - path: models/model.pkl
       hash: md5
-      md5: 62cbe782ea6cfcc098c01a2b7e8e7fab
+      md5: 115ad682fe25ec1f85174a0832917043
       size: 19928
     - path: src/models/predict_model.py
       hash: md5
@@ -77,5 +77,5 @@ stages:
     outs:
     - path: reports/metrics.json
       hash: md5
-      md5: 4ed5048ea1e4b953b6281b25fb11925c
-      size: 27
+      md5: 10e1a0ab435d50ad43d64b91f50e4c90
+      size: 28
