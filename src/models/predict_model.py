@@ -8,7 +8,7 @@ import pandas as pd
 from sklearn.base import BaseEstimator
 from sklearn.metrics import mean_absolute_error
 from dvclive import Live
-
+import mlflow
 
 logger = logging.getLogger(os.path.basename(__file__))
 logger.setLevel('DEBUG')
@@ -84,12 +84,25 @@ def exp_tracking_dvc(params_path: str, mae: float) -> None:
     with Live(save_dvc_exp=True) as live:
         live.log_metric('MAE', mae)
 
-    with open(params_path, 'r') as f:
-        params = yaml.safe_load(f)
-    
-    for param, value in params.items():
-        for key, val in value.items():
-            live.log_param(f'{param}_{key}',val)
+        with open(params_path, 'r') as f:
+            params = yaml.safe_load(f)
+        
+        for param, value in params.items():
+            for key, val in value.items():
+                live.log_param(f'{param}_{key}',val)
+
+def exp_tracking_mlflow(params_path: str, mae: float) -> None:
+
+    with mlflow.start_run():
+        mlflow.log_metric('MAE',mae)
+
+        with open(params_path, 'r') as f:
+            params = yaml.safe_load(f)
+        
+        for param, value in params.items():
+            for key, val in value.items():
+                mlflow.log_param(f'{param}_{key}',val)
+
 
 def main() -> None:
     try:
@@ -102,6 +115,7 @@ def main() -> None:
             evaluation_result_path="reports/metrics.json"
         )
         exp_tracking_dvc(params_path='params.yaml',mae=mae)
+        exp_tracking_mlflow(params_path='params.yaml',mae=mae)
         logger.debug('main function executed')
     except Exception as e:
         logger.error(f'Found Unexpected error at {__file__} -> main')
