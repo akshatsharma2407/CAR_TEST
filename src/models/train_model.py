@@ -61,14 +61,22 @@ def train_model(n_estimator: int, xtrain: np.array, ytrain: np.array) -> BaseEst
         model = GradientBoostingRegressor(n_estimators=n_estimator)
 
         param_grid = {
-            "n_estimators": [100, 50],
-            "max_depth": [3, 4]
+            "n_estimators": [10, 60],
+            "max_depth": [3, 2]
         }
 
         grid_search = GridSearchCV(estimator=model, param_grid=param_grid, cv=5, n_jobs=1, verbose=2)
 
         grid_search.fit(xtrain,ytrain)
             
+        for i in range(len(grid_search.cv_results_['params'])):
+
+            with mlflow.start_run(nested=True):
+                mlflow.log_params(grid_search.cv_results_['params'][i])
+                mlflow.log_metric('mae',grid_search.cv_results_['mean_test_score'][i])
+        
+        signature = mlflow.models.infer_signature(xtrain, grid_search.best_estimator_.predict(xtrain))
+        mlflow.sklearn.log_model(grid_search.best_estimator_,'best_model', signature=signature)
         logger.debug('model trained')
         return grid_search.best_estimator_
     except Exception as e:
@@ -87,8 +95,8 @@ def save_model(model_path: str, model: BaseEstimator) -> None:
 
 def main() -> None:
     try:
-        mlflow.sklearn.autolog()
-        mlflow.set_experiment('hyperparams tuning')
+        # mlflow.sklearn.autolog()
+        mlflow.set_experiment('hyperparameters tuning')
         with mlflow.start_run():
             n_estimator = load_params(param_path="params.yaml")
             xtrain, ytrain = load_data(data_path="data/processed/train_processed.csv")
