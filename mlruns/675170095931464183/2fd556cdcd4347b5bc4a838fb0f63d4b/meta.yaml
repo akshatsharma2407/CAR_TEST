@@ -1,0 +1,14 @@
+artifact_uri: file:///C:/Users/aksha/OneDrive/Desktop/cars_mlops_practice/autonexus/mlruns/675170095931464183/2fd556cdcd4347b5bc4a838fb0f63d4b/artifacts
+end_time: 1761288227014
+entry_point_name: ''
+experiment_id: '675170095931464183'
+lifecycle_stage: active
+run_id: 2fd556cdcd4347b5bc4a838fb0f63d4b
+run_name: sincere-yak-844
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1761288224794
+status: 3
+tags: []
+user_id: aksha

@@ -10,7 +10,6 @@ from sklearn.metrics import mean_absolute_error
 from dvclive import Live
 import mlflow
 import seaborn as sns
-from sklearn.base import BaseEstimator
 import matplotlib.pyplot as plt
 
 mlflow.set_tracking_uri('http://127.0.0.1:5000')
@@ -97,7 +96,7 @@ def exp_tracking_dvc(params_path: str, mae: float) -> None:
                 live.log_param(f'{param}_{key}',val)
     
 
-def exp_tracking_mlflow(params_path: str, mae: float, xtest: pd.DataFrame, model: BaseEstimator) -> None:
+def exp_tracking_mlflow(params_path: str, mae: float, xtest: pd.DataFrame) -> None:
     mlflow.set_experiment('new exp')
     with mlflow.start_run():
         mlflow.log_metric('MAE',mae)
@@ -117,9 +116,6 @@ def exp_tracking_mlflow(params_path: str, mae: float, xtest: pd.DataFrame, model
 
         mlflow.log_artifact(__file__)
 
-        mlflow.sklearn.log_model(model,'prediction_model')
-
-        mlflow.set_tag('author','akshat')
 
 def main() -> None:
     try:
@@ -132,7 +128,7 @@ def main() -> None:
             evaluation_result_path="reports/metrics.json"
         )
         exp_tracking_dvc(params_path='params.yaml',mae=mae)
-        exp_tracking_mlflow(params_path='params.yaml',mae=mae, xtest= xtest, model= model)
+        exp_tracking_mlflow(params_path='params.yaml',mae=mae, xtest= xtest)
         logger.debug('main function executed')
     except Exception as e:
         logger.error(f'Found Unexpected error at {__file__} -> main')

@@ -119,8 +119,6 @@ def exp_tracking_mlflow(params_path: str, mae: float, xtest: pd.DataFrame, model
 
         mlflow.sklearn.log_model(model,'prediction_model')
 
-        mlflow.set_tag('author','akshat')
-
 def main() -> None:
     try:
         model = load_model(model_path="models/model.pkl")

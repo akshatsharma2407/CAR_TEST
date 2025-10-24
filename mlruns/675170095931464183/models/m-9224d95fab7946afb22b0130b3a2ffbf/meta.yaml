@@ -1,0 +1,10 @@
+artifact_location: file:///C:/Users/aksha/OneDrive/Desktop/cars_mlops_practice/autonexus/mlruns/675170095931464183/models/m-9224d95fab7946afb22b0130b3a2ffbf/artifacts
+creation_timestamp: 1761288423922
+experiment_id: '675170095931464183'
+last_updated_timestamp: 1761288444537
+model_id: m-9224d95fab7946afb22b0130b3a2ffbf
+model_type: ''
+name: prediction_model
+source_run_id: 767fb13ee8ac4b6f9e2dc804d7ae9b1f
+status: 2
+status_message: null
