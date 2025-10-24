@@ -6,6 +6,10 @@ import logging
 import os
 from sklearn.base import BaseEstimator
 from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.model_selection import GridSearchCV
+import mlflow
+
+mlflow.set_tracking_uri('http://ec2-13-201-18-142.ap-south-1.compute.amazonaws.com:5000/')
 
 logger = logging.getLogger(os.path.basename(__file__))
 logger.setLevel('DEBUG')
@@ -74,11 +78,14 @@ def save_model(model_path: str, model: BaseEstimator) -> None:
 
 def main() -> None:
     try:
-        n_estimator = load_params(param_path="params.yaml")
-        xtrain, ytrain = load_data(data_path="data/processed/train_processed.csv")
-        model = train_model(n_estimator=n_estimator, xtrain=xtrain, ytrain=ytrain)
-        save_model(model_path="models/model.pkl", model=model)
-        logger.debug('main function executed')
+        mlflow.sklearn.autolog()
+        mlflow.set_experiment('new exp')
+        with mlflow.start_run():
+            n_estimator = load_params(param_path="params.yaml")
+            xtrain, ytrain = load_data(data_path="data/processed/train_processed.csv")
+            model = train_model(n_estimator=n_estimator, xtrain=xtrain, ytrain=ytrain)
+            save_model(model_path="models/model.pkl", model=model)
+            logger.debug('main function executed')
     except Exception as e:
         logger.error(f'Found Unexpected error in {__file__} -> main')
         raise

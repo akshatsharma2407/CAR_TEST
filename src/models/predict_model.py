@@ -12,11 +12,11 @@ import mlflow
 import seaborn as sns
 from sklearn.base import BaseEstimator
 import matplotlib.pyplot as plt
-import dagshub
+# import dagshub
 
-mlflow.set_tracking_uri('http://ec2-13-201-18-142.ap-south-1.compute.amazonaws.com:5000/')
+# mlflow.set_tracking_uri('http://ec2-13-201-18-142.ap-south-1.compute.amazonaws.com:5000/')
 
-dagshub.init(repo_owner='akshatsharma2407', repo_name='CAR_TEST', mlflow=True)
+# dagshub.init(repo_owner='akshatsharma2407', repo_name='CAR_TEST', mlflow=True)
 
 logger = logging.getLogger(os.path.basename(__file__))
 logger.setLevel('DEBUG')
@@ -124,6 +124,9 @@ def exp_tracking_mlflow(params_path: str, mae: float, xtest: pd.DataFrame, model
 
         mlflow.set_tag('author','akshat')
 
+        data = mlflow.data.from_pandas(xtest)
+        mlflow.log_input(data, 'test data')
+
 def main() -> None:
     try:
         model = load_model(model_path="models/model.pkl")
@@ -135,7 +138,7 @@ def main() -> None:
             evaluation_result_path="reports/metrics.json"
         )
         exp_tracking_dvc(params_path='params.yaml',mae=mae)
-        exp_tracking_mlflow(params_path='params.yaml',mae=mae, xtest= xtest, model= model)
+        # exp_tracking_mlflow(params_path='params.yaml',mae=mae, xtest= xtest, model= model)
         logger.debug('main function executed')
     except Exception as e:
         logger.error(f'Found Unexpected error at {__file__} -> main')
